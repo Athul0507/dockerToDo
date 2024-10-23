@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  webapp:
+    build: 
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: webapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    volumes:
+      - type: volume
+        source: mongodb_data
+        target: /data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    name: mongodb_data
+
